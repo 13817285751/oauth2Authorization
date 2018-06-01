@@ -28,9 +28,9 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer server) throws Exception {
 		// TODO Auto-generated method stub
-		/*server
+		server
 			.tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_TRUSTED_CLIENT')")
-			.checkTokenAccess("hasAuthority('ROLE_CLIENT')");*/
+			.checkTokenAccess("hasAuthority('ROLE_CLIENT')");
 	}
 
 	@Override
