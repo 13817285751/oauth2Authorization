@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurer;
@@ -25,6 +26,9 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer server) throws Exception {
 		// TODO Auto-generated method stub
@@ -39,7 +43,7 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 		client.jdbc(datasource)
 			.withClient("testClientId")
 				.resourceIds("testResourceId")
-				.authorizedGrantTypes("authorization_code", "implicit","client_credentials")
+				.authorizedGrantTypes("authorization_code", "password","client_credentials","refresh_token")
 				.authorities("TRUSTED_CLIENT")
 				.scopes("read","write")
 				.secret(passwordEncoder.encode("secret"))
@@ -59,7 +63,8 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 	public void configure(AuthorizationServerEndpointsConfigurer endpoint) throws Exception {
 		// TODO Auto-generated method stub
 		endpoint
-			.tokenStore(jdbcTokenStore);
+			.tokenStore(jdbcTokenStore)
+			.authenticationManager(authenticationManager); //设置AuthenticationManager，增加password支持
 	}
 	
 	@Bean
