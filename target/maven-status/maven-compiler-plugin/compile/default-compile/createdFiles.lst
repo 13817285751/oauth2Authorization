@@ -1,0 +1,5 @@
+org\feego\oauth2\authorzation\Application.class
+org\feego\oauth2\authorzation\common\RestAuthenticationEntryPoint.class
+org\feego\oauth2\authorzation\config\AuthorizationServerConfigure.class
+org\feego\oauth2\authorzation\config\WebSecurityConfigurer.class
+org\feego\oauth2\authorzation\common\CustomerErrorAttributes.class
