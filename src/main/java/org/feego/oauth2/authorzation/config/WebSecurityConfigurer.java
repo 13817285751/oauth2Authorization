@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -55,6 +56,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AuthenticationManager getauthenticationManager() throws Exception {
 		return super.authenticationManagerBean();
+	}
+	
+	@Bean
+	public UserDetailsService getUserDetailsService() throws Exception {
+		return super.userDetailsServiceBean();
 	}
 	
 }

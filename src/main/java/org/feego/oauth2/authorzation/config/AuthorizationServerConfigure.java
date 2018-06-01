@@ -1,11 +1,14 @@
 package org.feego.oauth2.authorzation.config;
 
+import java.security.SecureRandom;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurer;
@@ -29,12 +32,15 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer server) throws Exception {
 		// TODO Auto-generated method stub
 		server
-			.tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_TRUSTED_CLIENT')")
-			.checkTokenAccess("hasAuthority('ROLE_CLIENT')");
+			.tokenKeyAccess("isAnonymous() || hasAuthority('TRUSTED_CLIENT')")
+			.checkTokenAccess("hasAuthority('TRUSTED_CLIENT')"); //需要和clientdetails中的authorities相一致
 	}
 
 	@Override
@@ -64,7 +70,8 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 		// TODO Auto-generated method stub
 		endpoint
 			.tokenStore(jdbcTokenStore)
-			.authenticationManager(authenticationManager); //设置AuthenticationManager，增加password支持
+			.userDetailsService(userDetailsService)	//grant_type为password时，需要设置，如果为client_credentials，则可免去
+			.authenticationManager(authenticationManager); //grant_type为password时，需要设置，如果为client_credentials，则可免去
 	}
 	
 	@Bean
@@ -74,6 +81,7 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
+		SecureRandom random=new SecureRandom ("abc".getBytes());
+		return new BCryptPasswordEncoder(5,random);
 	}
 }
