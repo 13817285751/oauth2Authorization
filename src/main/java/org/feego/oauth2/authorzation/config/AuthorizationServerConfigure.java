@@ -38,13 +38,21 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 		// TODO Auto-generated method stub
 		client.jdbc(datasource)
 			.withClient("testClientId")
-			.resourceIds("testResourceId")
-			.authorizedGrantTypes("authorization_code", "implicit","client_credentials")
-			.authorities("TRUSTED_CLIENT")
-			.scopes("read","write")
-			.secret(passwordEncoder.encode("secret"))
-			.accessTokenValiditySeconds(86400)
-			.refreshTokenValiditySeconds(60);
+				.resourceIds("testResourceId")
+				.authorizedGrantTypes("authorization_code", "implicit","client_credentials")
+				.authorities("TRUSTED_CLIENT")
+				.scopes("read","write")
+				.secret(passwordEncoder.encode("secret"))
+				.accessTokenValiditySeconds(86400)
+				.refreshTokenValiditySeconds(60)
+			.and().withClient("testResource")
+				.resourceIds("myresource")
+				.authorizedGrantTypes("client_credentials")
+				.authorities("TRUSTED_CLIENT")
+				.scopes("read")
+				.secret(passwordEncoder.encode("secret"))
+				.accessTokenValiditySeconds(30)
+				.refreshTokenValiditySeconds(60);
 	}
 
 	@Override
