@@ -33,9 +33,9 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
             .antMatchers("/h2-console/**").permitAll()
             .anyRequest().hasRole("CLIENT")
             .and()
-        .exceptionHandling()
-            .authenticationEntryPoint(new RestAuthenticationEntryPoint()) //customer AuthenticationEntryPoint to response json string
-            .and()
+        //.exceptionHandling()
+            //.authenticationEntryPoint(new RestAuthenticationEntryPoint()) //customer AuthenticationEntryPoint to response json string
+            //.and()
         // TODO: put CSRF protection back into this endpoint
         .csrf()
             .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize"))

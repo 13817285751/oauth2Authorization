@@ -53,16 +53,16 @@ public class AuthorizationServerConfigure implements AuthorizationServerConfigur
 				.authorities("TRUSTED_CLIENT")
 				.scopes("read","write")
 				.secret(passwordEncoder.encode("secret"))
-				.accessTokenValiditySeconds(86400)
-				.refreshTokenValiditySeconds(60)
+				.accessTokenValiditySeconds(15)
+				.refreshTokenValiditySeconds(30)
 			.and().withClient("testResource")
 				.resourceIds("myresource")
 				.authorizedGrantTypes("client_credentials")
 				.authorities("TRUSTED_CLIENT")
 				.scopes("read")
 				.secret(passwordEncoder.encode("secret"))
-				.accessTokenValiditySeconds(30)
-				.refreshTokenValiditySeconds(60);
+				.accessTokenValiditySeconds(15)
+				.refreshTokenValiditySeconds(30);
 	}
 
 	@Override
